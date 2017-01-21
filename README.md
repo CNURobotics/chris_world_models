@@ -9,6 +9,14 @@ This repository is used with the new open-source CHRISLab [Flexible Navigation] 
 
 This package includes launch files and map files, as well as some simple python scripts used to create some worlds.
 
+| Gazebo-Simulation Launch Files | Description |
+|-------------|-------------|
+|gazebo_empty_world.launch | Launch gazebo with empty world without any robots (launch robots separately)|
+|gazebo_willow_world.launch| Launch gazebo using Willow Garage office model (without any robots) |
+|gazebo_corridors_world.launch| Launch gazebo using the simple corridors model (without any robots)|
+|gazebo_simple_creech_world.launch| Launch gazebo using the creech world model (without any robots)|
+
+
 ## Operation
 ---------
 
