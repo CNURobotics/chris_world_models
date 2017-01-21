@@ -1,0 +1,23 @@
+<package format="2">
+  <name>chris_world_models</name>
+  <version>0.0.1</version>
+  <description>Standard world models and corresponding map files for Gazebo used by CNU Robotics CHRISLab </description>
+  <maintainer email="david.conner@cnu.edu">David Conner</maintainer>
+  <license>BSD</license>
+  <url type="website">https://github.com/CNURobotics/chris_world_models</url>
+  <url type="repository">https://github.com/CNURobotics/chris_world_models</url>
+  <url type="bugtracker">https://github.com/CNURobotics/chris_world_models/issues</url>
+  <author>David Conner</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>gazebo_ros</depend>
+  <depend>gazebo_plugins</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2_ros</depend>
+
+</package>
