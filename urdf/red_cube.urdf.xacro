@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:include filename="$(find chris_world_models)/urdf/simple_cube.urdf.xacro"/>
+
+  <simple_cube id="red" mass="0.25" length="0.1" width="0.1" height="0.07" gazebo_color="Red"/>
+
+</robot>

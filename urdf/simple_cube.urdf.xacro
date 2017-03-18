@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="simple_cube" params="id:=simple mass:=2.0 length:=0.1 width:=0.1 height:=0.1 gazebo_color:=Red ">
+
+      <link name="${id}_cube">
+        <inertial>
+            <mass value="${mass}" />
+            <origin xyz="0 0 0" />
+            <inertia  ixx="${width*height*mass}" ixy="0.0"  ixz="0.0"  iyy="${length*height*mass}"  iyz="0.0"  izz="${width*length*mass}" />
+        </inertial>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+            <box size="${length} ${width} ${height}"/>
+          </geometry>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0" />
+          <geometry>
+          <box size="${length} ${width} ${height}"/>
+          </geometry>
+        </collision>
+      </link>
+      <gazebo reference="${id}_cube">
+          <mu1>100000</mu1>
+          <mu2>100000</mu2>
+          <material>Gazebo/${gazebo_color}</material>
+          <turnGravityOff>false</turnGravityOff>
+      </gazebo>
+
+  </xacro:macro>
+</robot>

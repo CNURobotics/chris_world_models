@@ -1,0 +1,16 @@
+<launch>
+  <arg name="ball_id" default="ball0" />
+  <arg name="color"   default="red"/>
+  <arg name="x_pos"   default="-1.0"/>
+  <arg name="y_pos"   default="-1.0"/>
+  <arg name="z_pos"   default= "0.05"/> <!-- slight drop for small ball -->
+
+  <!-- make sure all colors are available -->
+  <param name="red_ball"   command="$(find xacro)/xacro -v --inorder $(find chris_world_models)/urdf/red_ball.urdf.xacro" />
+  <param name="green_ball" command="$(find xacro)/xacro -v --inorder $(find chris_world_models)/urdf/green_ball.urdf.xacro" />
+  <param name="blue_ball"  command="$(find xacro)/xacro -v --inorder $(find chris_world_models)/urdf/blue_ball.urdf.xacro" />
+
+  <!-- add ball of specified color and id to the gazebo simlation at the given coordinates -->
+  <node name="$(arg ball_id)" pkg="gazebo_ros" type="spawn_model" args="-param $(arg color)_ball  -urdf -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -model $(arg ball_id)" />
+
+</launch>
