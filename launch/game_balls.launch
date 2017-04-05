@@ -1,7 +1,7 @@
 <launch>
-  <param name="red_ball"   command="$(find xacro)/xacro -v --inorder $(find chris_create_navigation)/urdf/red_ball.urdf.xacro" />
-  <param name="green_ball" command="$(find xacro)/xacro -v --inorder $(find chris_create_navigation)/urdf/green_ball.urdf.xacro" />
-  <param name="blue_ball"  command="$(find xacro)/xacro -v --inorder $(find chris_create_navigation)/urdf/blue_ball.urdf.xacro" />
+  <param name="red_ball"   command="$(find xacro)/xacro -v --inorder $(find chris_world_models)/urdf/red_ball.urdf.xacro" />
+  <param name="green_ball" command="$(find xacro)/xacro -v --inorder $(find chris_world_models)/urdf/green_ball.urdf.xacro" />
+  <param name="blue_ball"  command="$(find xacro)/xacro -v --inorder $(find chris_world_models)/urdf/blue_ball.urdf.xacro" />
 
   <node name="ball_1" pkg="gazebo_ros" type="spawn_model" args="-param red_ball   -urdf -x -1.2192 -y  2.56032 -z 1.1854 -model ball_1" />
   <node name="ball_2" pkg="gazebo_ros" type="spawn_model" args="-param red_ball   -urdf -x  1.2192 -y -2.56032 -z 0.0254 -model ball_2" />
@@ -11,4 +11,3 @@
   <node name="ball_6" pkg="gazebo_ros" type="spawn_model" args="-param blue_ball  -urdf -x -2.7432 -y -1.34112 -z 0.0254 -model ball_6" />
 
 </launch>
-
