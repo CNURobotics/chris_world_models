@@ -178,9 +178,9 @@ def make_map(filename,
              box_size=np.array([12.,17.5])*0.0254,   # copier paper box
              wall_size=np.array([1.0,48.0])*0.0254): # Styrofoam wall
 
-    #define th size of the map
-    w_pixels    = w_cells*cell_size/pixel_size
-    h_pixels    = h_cells*cell_size/pixel_size
+    #define the size of the map
+    w_pixels    = int(round(w_cells*cell_size/pixel_size))
+    h_pixels    = int(round(h_cells*cell_size/pixel_size))
 
     grid_map    = np.zeros((h_pixels,w_pixels,3),np.uint8) + 255
 

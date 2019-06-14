@@ -1,5 +1,5 @@
-image: creech_map_050.pgm
-resolution: 0.050
+image: creech_map_100.pgm
+resolution: 0.100
 origin: [-3.048, -4.271, 0.0]
 negate: 0
 occupied_thresh: 0.65
