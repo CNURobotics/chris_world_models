@@ -1,0 +1,7 @@
+# name, robot_namespace, model file, pose 
+ball11, ,red_ball.urdf.xacro, -1.6192, -1.20, 0.25
+ball12, ,red_ball.urdf.xacro,  1.6192, -1.75, 0.25
+ball13, ,green_ball.urdf.xacro, 0.69,  -3.2, 0.25
+ball14, ,green_ball.urdf.xacro, -1.55, -3.3, 0.25
+ball15, ,blue_ball.urdf.xacro, -1.45, -2.2, 0.25
+ball16, ,blue_ball.urdf.xacro,  1.45, -3.9, 0.25
