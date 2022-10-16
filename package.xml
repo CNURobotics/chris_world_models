@@ -1,6 +1,6 @@
 <package format="3">
   <name>chris_world_models</name>
-  <version>0.0.2</version>
+  <version>0.0.3</version>
   <description>Standard world models and corresponding map files for Gazebo used by CNU Robotics CHRISLab </description>
   <maintainer email="robotics@cnu.edu">David Conner</maintainer>
   <license>BSD</license>
