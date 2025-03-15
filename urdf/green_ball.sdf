@@ -1,0 +1,49 @@
+<sdf version='1.11'>
+  <model name='green_ball'>
+    <link name='green_ball'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.25</mass>
+        <inertia>
+          <ixx>6.4516000000000004e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>6.4516000000000004e-05</iyy>
+          <iyz>0</iyz>
+          <izz>6.4516000000000004e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='green_ball_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025399999999999999</radius>
+          </sphere>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='green_ball_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.025399999999999999</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Green</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>true</gravity>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,52 @@
+<sdf version='1.11'>
+  <model name='red_cube'>
+    <link name='red_cube'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.25</mass>
+        <inertia>
+          <ixx>0.00175</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00175</iyy>
+          <iyz>0</iyz>
+          <izz>0.0025000000000000001</izz>
+        </inertia>
+      </inertial>
+      <collision name='red_cube_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.10000000000000001 0.10000000000000001 0.070000000000000007</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>100000</mu>
+              <mu2>100000</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='red_cube_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.10000000000000001 0.10000000000000001 0.070000000000000007</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>true</gravity>
+    </link>
+  </model>
+</sdf>

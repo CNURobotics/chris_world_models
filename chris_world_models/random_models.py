@@ -28,7 +28,7 @@ def get_map_extents(map_path):
             raise exc
 
         #print("MAP YAML: ", params)
-        #print(f"Map {map_name} {width} x {height}")
+        #print(f"Map {map_path} {width} x {height}")
 
     origin = params['origin']
     resolution = params['resolution']
@@ -50,8 +50,9 @@ def generate_random_spawn_string(map_path, models, counts):
         y_pose = np.random.uniform(extents[1], extents[3], count)
         z_pose = 0*x_pose + 0.25
 
+        model_name = model.split("/")[-1].split(".")[0]
         for j in range(count):
-            name = f"{model.split('.')[0]}_{j}_{int(time.time_ns()%1e10)}"
+            name = f"{model_name}_{j}_{int(time.time_ns()%1e10)}"  # define unique name
 
             # Assume no namespace for now
             spawn_string += f"{name}, ,{model},{x_pose[j]},{y_pose[j]},{z_pose[j]}\n"
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     counts = [3, 4, 2]
 
     extents = get_map_extents(map_path)
-    print(f"Map {map_name} Extents : {extents}")
+    print(f"Map {map_path} Extents : {extents}")
 
     spawn_string = generate_random_spawn_string(map_path, models, counts)
     print(30*"=")

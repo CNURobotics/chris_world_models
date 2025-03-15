@@ -21,4 +21,4 @@ from chris_world_models.gazebo_launch_description import gazebo_launch_descripti
 
 def generate_launch_description():
     print("Launching Gazebo with E-world environment ...")
-    return gazebo_launch_description(world_file_name='e_map.world')
+    return gazebo_launch_description(world_model_name='e_map')

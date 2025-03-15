@@ -21,36 +21,35 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, ExecuteProcess
 from launch.actions import IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
 
-def gazebo_launch_description(world_file_name):
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, RegisterEventHandler, TimerAction, SetLaunchConfiguration, IncludeLaunchDescription
+from launch.event_handlers import OnProcessExit, OnProcessStart
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
+from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
+from launch_ros.substitutions import FindPackageShare
 
-    world = os.path.join(get_package_share_directory('chris_world_models'),
-                         'worlds', world_file_name)
-    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
+from launch.conditions import IfCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 
-    print(f"   Load {world} file using {pkg_gazebo_ros} ...")
+
+def gazebo_launch_description(world_model_name):
+    chris_worlds_pkg = 'chris_world_models'
+    world_model_file = os.path.join(get_package_share_directory(chris_worlds_pkg),
+                                    "worlds", world_model_name+".sdf")
+
+    print(f"   Loading world model file '{world_model_name}' ...\n    '{world_model_file}'")
     return LaunchDescription([
-        DeclareLaunchArgument('gui', default_value='true',
-                              description='Set to "false" to run headless.'),
-
-        DeclareLaunchArgument('server', default_value='true',
-                              description='Set to "false" not to run gzserver.'),
-
         IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([pkg_gazebo_ros, '/launch',  '/gzserver.launch.py']),
-            condition=IfCondition(LaunchConfiguration('server')),
-            launch_arguments={'world': world, 'verbose':'true'}.items(),
-        ),
-
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([pkg_gazebo_ros, '/launch', '/gzclient.launch.py']),
-            condition=IfCondition(LaunchConfiguration('gui')),
-            launch_arguments={'verbose':'true'}.items(),
-        ),
+            PythonLaunchDescriptionSource(
+                [PathJoinSubstitution([FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py'])]
+            ),
+            launch_arguments=[("gz_args", ["-r ", world_model_file])])
     ])

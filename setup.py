@@ -16,6 +16,7 @@ setup(
         (os.path.join('share', package_name, 'param'), glob('param/*')),
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/env-hooks', ['env-hooks/chris_world_models.dsv.in']),
     ],
     install_requires=['setuptools'],
     zip_safe=True,

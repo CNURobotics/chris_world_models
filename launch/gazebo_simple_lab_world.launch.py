@@ -21,4 +21,4 @@ from chris_world_models.gazebo_launch_description import gazebo_launch_descripti
 
 def generate_launch_description():
     print("Launching Gazebo with simple lab environment ...")
-    return gazebo_launch_description(world_file_name='lab_world_050.world')
+    return gazebo_launch_description(world_model_name='lab_world_050')

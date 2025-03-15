@@ -15,7 +15,8 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     return LaunchDescription([
-        Node(package='chris_world_models', executable='model_spawner',
-             parameters=[{'models_string': 'cube0, , chris_world_models/urdf/red_cube.urdf.xacro, 0.75, -2.0, 0.5'}],
+        Node(package='chris_world_models',
+             executable='model_spawner',
+             parameters=[{'models_string': 'cube0, , chris_world_models/urdf/red_cube.sdf, 0.75, -2.0, 0.5'}],
              output='screen'),
         ])

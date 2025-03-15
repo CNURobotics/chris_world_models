@@ -9,12 +9,18 @@ import csv
 import os
 import sys
 import rclpy
-from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
-from gazebo_msgs.srv import SpawnEntity
+import subprocess
 import xacro
+
+from ament_index_python.packages import get_package_share_directory, PackageNotFoundError
+
 
 def make_spawn_request(name, urdf_file_path, robot_namespace, pose_args):
     try:
+        if ".sdf" in urdf_file_path:
+            return urdf_file_path, pose_args
+
+        print(f" Not SDF! '{urdf_file_path}'", flush=True)
         if "xacro" in urdf_file_path:
             description_config = xacro.process_file(urdf_file_path)
             urdf_xml = description_config.toxml()
@@ -22,19 +28,20 @@ def make_spawn_request(name, urdf_file_path, robot_namespace, pose_args):
             urdf_xml = open(urdf_file_path, 'r').read()
 
         if isinstance(urdf_xml, str) and len(urdf_xml) > 1:
-            request = SpawnEntity.Request()
-            request.name = name
-            request.xml = urdf_xml
-            request.robot_namespace = robot_namespace
-            request.initial_pose.position.x = pose_args[0]
-            request.initial_pose.position.y = pose_args[1]
-            request.initial_pose.position.z = pose_args[2]
-            if len(pose_args) > 6:
-                request.initial_pose.orientation.x = pose_args[3]
-                request.initial_pose.orientation.y = pose_args[4]
-                request.initial_pose.orientation.z = pose_args[5]
-                request.initial_pose.orientation.w = pose_args[6]
-            return request
+            # request = SpawnEntity.Request()
+            # request.name = name
+            # request.xml = urdf_xml
+            # request.robot_namespace = robot_namespace
+            # request.initial_pose.position.x = pose_args[0]
+            # request.initial_pose.position.y = pose_args[1]
+            # request.initial_pose.position.z = pose_args[2]
+            # if len(pose_args) > 6:
+            #     request.initial_pose.orientation.x = pose_args[3]
+            #     request.initial_pose.orientation.y = pose_args[4]
+            #     request.initial_pose.orientation.z = pose_args[5]
+            #     request.initial_pose.orientation.w = pose_args[6]
+            # return request
+            return urdf_xml, pose_args
         else:
             print(f"Invalid XML for {name}\n {e}")
 
@@ -70,6 +77,7 @@ def load_models_from_string(models_string, model_pose=None):
                 continue  # ignore blank or comment lines
 
             try:
+                print(f"  Processing model string '{line}' ...")
                 data  = line.strip().split(",")
                 if len(data) > 2 and (model_pose or len(data) > 5):
                     name = data[0].strip()
@@ -234,30 +242,61 @@ def main():
 
     else:
 
-        node.get_logger().info(
-            'Creating Service client to connect to `/spawn_entity`')
-        client = node.create_client(SpawnEntity, "/spawn_entity")
+        # node.get_logger().info(
+        #     'Creating Service client to connect to `/spawn_entity`')
+        # client = node.create_client(SpawnEntity, "/spawn_entity")
 
-        node.get_logger().info("Connecting to `/spawn_entity` service...")
-        if not client.service_is_ready():
-            client.wait_for_service()
-            node.get_logger().info("...connected!")
+        # node.get_logger().info("Connecting to `/spawn_entity` service...")
+        # if not client.service_is_ready():
+        #     client.wait_for_service()
+        #     node.get_logger().info("...connected!")
 
+        print(f"\nTry to spawn {len(models_to_spawn)} models")
         for name, request in models_to_spawn.items():
             try:
-                assert isinstance(request, SpawnEntity.Request), f"Not Request type ({type(request)})"
-                node.get_logger().info(f"Sending service request for {request.name} to `/spawn_entity` service ...")
-                future = client.call_async(request)
-                rclpy.spin_until_future_complete(node, future)
-                if future.result() is not None:
-                    result = future.result()
-                    if not result.success:
-                        print(f"    Failed to spawn model {name} : {result.status_message}")
-                    else:
-                        print(f"    Successfully spawned {name}!")
+                # assert isinstance(request, SpawnEntity.Request), f"Not Request type ({type(request)})"
+                # node.get_logger().info(f"Sending service request for {request.name} to `/spawn_entity` service ...")
+                # future = client.call_async(request)
+                # rclpy.spin_until_future_complete(node, future)
+                # if future.result() is not None:
+                #     result = future.result()
+                #     if not result.success:
+                #         print(f"    Failed to spawn model {name} : {result.status_message}")
+                #     else:
+                #         print(f"    Successfully spawned {name}!")
+                # else:
+                #     raise RuntimeError(
+                #         'Null result when calling service: %r' % future.exception())
+
+                # Spawn command
+                print(f"Attempt to spawn '{name}' ...", flush=True)
+                sdf_file, pose = request
+                x, y, z, roll, pitch, yaw = 6*[0.0]
+                if len(pose) > 3:
+                    x, y, z, roll, pitch, yaw = pose
+                elif len(pose) > 0:
+                    x, y, z = pose
+                spawn_cmd = [
+                    "gz", "service", "-s", "/world/empty/create",
+                    "--reqtype", "gz.msgs.EntityFactory",
+                    "--reptype", "gz.msgs.Boolean",
+                    "--timeout", "1000",
+                    "--req",
+                    # below is single string argument
+                    f"""sdf_filename: "{sdf_file}", """
+                    f""" name: "{name}","""
+                    f""" pose: {{position: {{x:{x}, y:{y}, z: {z} }} }}""",
+                    #f"""orientation: {{roll: {roll}, pitch: {pitch}, yaw: {yaw} }} }}'"""
+                ]
+
+                print(f"""Run: '{" ".join(spawn_cmd)}'""", flush=True)
+                result = subprocess.run(spawn_cmd, capture_output=True, text=True)
+
+                if result.returncode == 0 and result.stderr == '':
+                    print(f"Successfully spawned {name} at ({x}, {y}, {z})")
                 else:
-                    raise RuntimeError(
-                        'Null result when calling service: %r' % future.exception())
+                    print(f"Error spawning model '{name}' ({result.returncode}):\n{result.stderr}")
+
             except Exception as e:
                 print(f"  Exception: {type(e)}, {e}")
                 print(f"    Request for {name}: ({request})")
