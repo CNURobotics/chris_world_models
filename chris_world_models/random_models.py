@@ -48,7 +48,7 @@ def generate_random_spawn_string(map_path, models, counts):
 
         x_pose = np.random.uniform(extents[0], extents[2], count)
         y_pose = np.random.uniform(extents[1], extents[3], count)
-        z_pose = 0*x_pose + 0.25
+        z_pose = 0*x_pose + 1.0  # Launch above robot to avoid collision
 
         model_name = model.split("/")[-1].split(".")[0]
         for j in range(count):
